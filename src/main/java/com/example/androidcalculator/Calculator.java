@@ -65,7 +65,6 @@ public class Calculator extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
-
             String input = showText.getText().toString();
             switch (view.getId()) {
                 case R.id.num_0:
@@ -80,7 +79,10 @@ public class Calculator extends AppCompatActivity {
                 case R.id.num_9:
                 case R.id.point:
                     if(input.equals("0")){
-                        input = "";
+                        if(view.getId() == R.id.point){
+                        } else {
+                            input = "";
+                        }
                     }
                     if(StateChange) {
                         input = "";
@@ -106,14 +108,22 @@ public class Calculator extends AppCompatActivity {
                     operator = ((Button) view).getText().toString();
                     break;
                 case R.id.bt_equal:
-                    second_num = showText.getText().toString();
-                    if(!operator.equals("")){
+
+                    if(StateChange){
                         String result = calculate(first_num,second_num,operator);
                         first_num = result;
                         showText.setText("" + result);
-                    }else{
-
+                    } else {
+                        second_num = showText.getText().toString();
+                        if(!operator.equals("")){
+                            String result = calculate(first_num,second_num,operator);
+                            first_num = result;
+                            showText.setText("" + result);
+                        }
+                        StateChange = true;
                     }
+
+
                     break;
                 case R.id.All_clear:
                     showText.setText("0");
@@ -150,11 +160,9 @@ public class Calculator extends AppCompatActivity {
     //when the num behind point is 0, just show the num. 3.0 shows 3
     public static String doubleTrans(double num)
     {
-        if(num % 1.0 == 0)
-        {
+        if(num % 1.0 == 0){
             return String.valueOf((long)num);
         }
-
         return String.valueOf(num);
     }
 
